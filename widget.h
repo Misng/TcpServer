@@ -2,7 +2,7 @@
 #define WIDGET_H
 
 #include <QWidget>
-#include <tcpserver.h>
+#include "tcpserver.h"
 
 namespace Ui {
 class Widget;

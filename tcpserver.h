@@ -3,6 +3,7 @@
 
 #include <QTcpServer>
 #include <QTcpSocket>
+#include "socketthread.h"
 
 class TcpServer : public QTcpServer
 {
@@ -14,10 +15,12 @@ public:
 signals:
         
 public slots:
-        void readSocket();
-        void displayErr(QAbstractSocket::SocketError);
+//        void readSocket();
+//        void displayErr(QAbstractSocket::SocketError);
+
+        void threadFinished();
 private:
-        QTcpSocket * socket;
+//        QTcpSocket * socket;
 };
 
 #endif // TCPSERVER_H
