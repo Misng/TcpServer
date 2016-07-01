@@ -13,6 +13,7 @@ SocketThread::SocketThread(int socketDescriptor):m_socketDescriptor(socketDescri
 {
 }
 
+
 void SocketThread::run()
 {
         socket = new QTcpSocket();
@@ -20,11 +21,35 @@ void SocketThread::run()
                 qDebug()<<socket->errorString();
                 return;
         }
-        connect(socket,SIGNAL(readyRead()),this,SLOT(readSocket()));
+
+        QByteArray array;
+        while (TRUE) {
+            if(socket->waitForReadyRead()){
+                array = socket->readAll();
+                qDebug()<<array<<":Read";
+                emit sendData(socket->socketDescriptor(),array);
+            }else{
+                qDebug()<<socket->errorString()<<":Read";
+                break;
+            }
+            usleep(500);
+            QMap<int,QByteArray> tmp;
+            tmp = TcpServer::g_map;
+            if(!TcpServer::g_map.isEmpty()){
+                array = TcpServer::g_map.value(socket->socketDescriptor());
+                socket->write(array);
+                TcpServer::g_map.remove(socket->socketDescriptor());
+            }
+        }
+
+        socket->deleteLater();
+
+
+      /*  connect(socket,SIGNAL(readyRead()),this,SLOT(readSocket()));
         connect(socket,SIGNAL(error(QAbstractSocket::SocketError)),
                 this,SLOT(displayErr(QAbstractSocket::SocketError)));
         connect(socket,SIGNAL(disconnected()),socket,SLOT(deleteLater()));
-        exec();
+        exec();*/
 }
 
 void SocketThread::readSocket()

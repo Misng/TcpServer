@@ -3,6 +3,7 @@
 
 #include <QThread>
 #include <QTcpSocket>
+#include "tcpserver.h"
 
 class SocketThread : public QThread
 {
@@ -11,11 +12,12 @@ public:
         explicit SocketThread(QObject *parent = 0);
 //        SocketThread(QObject *parent,int socketDescriptor);
         SocketThread(int socketDescriptor);
+//        ~SocketThread();
 
         void run();
 
 signals:
-
+        void sendData(int,QByteArray);
 public slots:
         void readSocket();
         void displayErr(QAbstractSocket::SocketError);

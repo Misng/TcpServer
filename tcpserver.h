@@ -15,12 +15,10 @@ public:
 signals:
         
 public slots:
-//        void readSocket();
-//        void displayErr(QAbstractSocket::SocketError);
-
         void threadFinished();
-private:
-//        QTcpSocket * socket;
+        void recvData(int socketNum,QByteArray array);
+public:
+        static QMap<int,QByteArray> g_map;
 };
 
 #endif // TCPSERVER_H
